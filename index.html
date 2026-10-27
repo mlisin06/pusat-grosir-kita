@@ -43,6 +43,11 @@
 </head>
 <body class="bg-gray-100 font-sans text-gray-800 pb-16 md:pb-0">
 
+    <!-- DEMO BANNER NOTIFICATION (Otomatis muncul jika ?demo=true) -->
+    <div id="demoBanner" class="hidden bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 border-b border-amber-300 px-4 py-2.5 text-center text-xs font-extrabold text-slate-950 shadow-md z-50">
+        <i class="fa-solid fa-flask mr-2 text-base"></i> MODE DEMO PRATINJAU BLOG: Ini adalah simulasi interaktif katalog produk afiliasi.
+    </div>
+
     <!-- FLOATING WA BUTTON (KHUSUS DESKTOP) -->
     <a id="floatingWaBtn" href="#" target="_blank" aria-label="Tanya Admin di WhatsApp" class="hidden md:flex fixed bottom-5 right-5 bg-green-600 hover:bg-green-700 text-white px-4 py-3 rounded-full shadow-2xl items-center gap-2 z-50 font-bold text-xs transition animate-pulse">
         <i class="fa-brands fa-whatsapp text-xl"></i>
@@ -281,7 +286,7 @@
                         </div>
                     </details>
 
-                    <!-- TOMBOL MENU AKSES CEPAT (DAPAT DIKLIK UNTUK MUNCULKAN SEKSI) -->
+                    <!-- TOMBOL MENU AKSES CEPAT -->
                     <button onclick="toggleSection('titip-jual')" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg hover:bg-slate-800 transition text-gray-300 text-left">
                         <i class="fa-solid fa-handshake text-amber-400"></i> Titip Jual / Mitra
                     </button>
@@ -389,7 +394,7 @@
                 </div>
             </section>
 
-            <!-- SEKSI 2: KATALOG PRODUK FIREBASE (UTAMA YANG TAMPIL) -->
+            <!-- SEKSI 2: KATALOG PRODUK FIREBASE -->
             <section id="terlaris" class="mb-8">
                 <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                     <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2 shrink-0">
@@ -409,7 +414,7 @@
                 </div>
             </section>
 
-            <!-- TOMBOL AKSES CEPAT (BAR NAVIGASI DI DALAM HALAMAN UTAMA) -->
+            <!-- TOMBOL AKSES CEPAT -->
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-8">
                 <button onclick="toggleSection('lacak-pesanan')" class="bg-cyan-600 hover:bg-cyan-700 text-white p-3 rounded-xl text-xs font-bold transition shadow flex flex-col items-center gap-1">
                     <i class="fa-solid fa-truck-fast text-base"></i> Lacak Pesanan
@@ -428,8 +433,6 @@
                 </button>
             </div>
 
-            <!-- SEKSI YANG DISEMBUNYIKAN SECARA DEFAULT (MUNCUL JIKA DIKLIK) -->
-            
             <!-- 1. LACAK STATUS PESANAN -->
             <section id="lacak-pesanan" class="hidden mb-8 bg-white p-6 rounded-xl shadow-sm border border-slate-200">
                 <div class="max-w-xl mx-auto space-y-4 text-center">
@@ -664,6 +667,18 @@
 
     <!-- SCRIPT FIREBASE & LOGIC -->
     <script>
+        // PENDETEKSI MODE DEMO (?demo=true)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isDemoMode = urlParams.get('demo') === 'true' || urlParams.get('demo') === '1' || urlParams.get('mode') === 'demo';
+        window.isDemoMode = isDemoMode;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (isDemoMode) {
+                const banner = document.getElementById('demoBanner');
+                if (banner) banner.classList.remove('hidden');
+            }
+        });
+
         const firebaseConfig = {
             databaseURL: "https://muhlisin-market-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
@@ -691,7 +706,6 @@
 
         const fakeTimes = ["Baru saja", "1 menit lalu", "2 menit lalu", "5 menit lalu", "8 menit lalu"];
 
-        // FUNGSI TOGGLE SEKSI (UNTUK MENYEMBUNYIKAN/MEMUNCULKAN SEKSI KETIKA DIKLIK)
         function toggleSection(sectionId) {
             const sec = document.getElementById(sectionId);
             if (sec) {
@@ -948,11 +962,15 @@
             msg += `📝 *Deskripsi Singkat:* ${desc}\n\n`;
             msg += `Mohon info lanjut mengenai proses penayangan produknya ya Kak. Terima kasih!`;
 
-            db.ref('vendors').push({
-                name, wa, product, price, commission, photo, desc,
-                status: 'Menunggu Kurasi',
-                date: new Date().toLocaleDateString('id-ID')
-            });
+            if (!isDemoMode) {
+                db.ref('vendors').push({
+                    name, wa, product, price, commission, photo, desc,
+                    status: 'Menunggu Kurasi',
+                    date: new Date().toLocaleDateString('id-ID')
+                });
+            } else {
+                alert('Mode Demo: Pengajuan titip jual disimulasikan terkirim.');
+            }
 
             const encodedMsg = encodeURIComponent(msg);
             window.open(`https://wa.me/${currentWaNum}?text=${encodedMsg}`, '_blank');
@@ -1152,7 +1170,7 @@
 
             if (appliedDiscount > 0) {
                 if(discountRow) discountRow.classList.remove('hidden');
-                if(grandTotalRow) grandTotalRow.classList.remove('hidden');
+                if(grandTotalRow) grandTotalRow.classList.add('hidden') ? grandTotalRow.classList.remove('hidden') : null;
                 document.getElementById('cartDiscountPrice').textContent = "-Rp " + appliedDiscount.toLocaleString('id-ID');
                 document.getElementById('cartGrandTotalPrice').textContent = "Rp " + finalTotal.toLocaleString('id-ID');
             } else {
@@ -1199,7 +1217,6 @@
             cart.forEach((item, i) => {
                 const cleanPrice = parseInt(item.price.replace(/[^0-9]/g, '')) || 0;
                 const subtotal = cleanPrice * item.qty;
-                totalSection = subtotal;
                 totalEstimation += subtotal;
                 msg += `${i + 1}. *${item.title}* (${item.price}) x ${item.qty} = Rp ${subtotal.toLocaleString('id-ID')}\n`;
             });
@@ -1218,16 +1235,20 @@
             msg += `• *Alamat Lengkap:* ${address}\n\n`;
             msg += `Mohon total ongkir & konfirmasi pengirimannya ya kak. Terima kasih!`;
 
-            db.ref('orders').push({
-                custName: name,
-                district: district,
-                address: address,
-                courier: courier,
-                payment: payment,
-                total: totalEstimation,
-                status: 'Sedang Dikemas / Diproses Admin',
-                date: new Date().toLocaleDateString('id-ID')
-            });
+            if (!isDemoMode) {
+                db.ref('orders').push({
+                    custName: name,
+                    district: district,
+                    address: address,
+                    courier: courier,
+                    payment: payment,
+                    total: totalEstimation,
+                    status: 'Sedang Dikemas / Diproses Admin',
+                    date: new Date().toLocaleDateString('id-ID')
+                });
+            } else {
+                alert('Mode Demo: Pesanan disimulasikan terkirim ke WhatsApp.');
+            }
 
             const encodedMsg = encodeURIComponent(msg);
             window.open(`https://wa.me/${currentWaNum}?text=${encodedMsg}`, '_blank');
