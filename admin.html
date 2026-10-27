@@ -16,6 +16,11 @@
 </head>
 <body class="bg-slate-100 font-sans text-gray-800">
 
+    <!-- DEMO BANNER NOTIFICATION (Otomatis muncul jika ?demo=true) -->
+    <div id="demoBanner" class="hidden bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 border-b border-amber-300 px-4 py-2.5 text-center text-xs font-extrabold text-slate-950 shadow-md z-50">
+        <i class="fa-solid fa-flask mr-2 text-base"></i> MODE DEMO PRATINJAU BLOG: Ini adalah simulasi panel admin interaktif. Perubahan data tidak akan mempengaruhi database asli.
+    </div>
+
     <div class="min-h-screen flex flex-col md:flex-row">
         
         <!-- SIDEBAR ADMIN -->
@@ -423,6 +428,18 @@
 
     <!-- FIREBASE SCRIPT & ADMIN LOGIC -->
     <script>
+        // PENDETEKSI MODE DEMO (?demo=true)
+        const urlParams = new URLSearchParams(window.location.search);
+        const isDemoMode = urlParams.get('demo') === 'true' || urlParams.get('demo') === '1' || urlParams.get('mode') === 'demo';
+        window.isDemoMode = isDemoMode;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            if (isDemoMode) {
+                const banner = document.getElementById('demoBanner');
+                if (banner) banner.classList.remove('hidden');
+            }
+        });
+
         const firebaseConfig = {
             databaseURL: "https://muhlisin-market-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
@@ -451,6 +468,7 @@
 
         function saveWebsiteSettings(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Perubahan pengaturan website tidak disimpan permanen.'); return; }
             db.ref('settings').set({
                 brandName: document.getElementById('settingBrandName').value,
                 heroTitle: document.getElementById('settingHeroTitle').value,
@@ -479,6 +497,7 @@
 
         function saveAboutSettings(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Perubahan tentang kami tidak disimpan permanen.'); return; }
             db.ref('about').set({
                 img: document.getElementById('aboutImg').value,
                 badge: document.getElementById('aboutBadge').value,
@@ -549,10 +568,12 @@
         });
 
         function updateOrderStatus(id, newStatus) {
+            if (isDemoMode) { alert('Mode Demo: Status pesanan tidak dapat diubah permanen.'); return; }
             db.ref('orders/' + id).update({ status: newStatus });
         }
 
         function deleteOrder(id) {
+            if (isDemoMode) { alert('Mode Demo: Pesanan tidak dapat dihapus.'); return; }
             if (confirm('Hapus data pesanan ini?')) {
                 db.ref('orders/' + id).remove();
             }
@@ -592,7 +613,7 @@
 
         function approveVendor(id, productTitle, price, imgUrl) {
             if(confirm(`Setujui pengajuan produk "${productTitle}"? Data produk akan otomatis diisikan ke form Tambah Produk.`)) {
-                db.ref('vendors/' + id).update({ status: 'Disetujui' });
+                if (!isDemoMode) db.ref('vendors/' + id).update({ status: 'Disetujui' });
                 
                 switchTab('tab-products');
                 document.getElementById('prodTitle').value = productTitle;
@@ -606,6 +627,7 @@
         }
 
         function deleteVendor(id) {
+            if (isDemoMode) { alert('Mode Demo: Mitra tidak dapat dihapus.'); return; }
             if (confirm('Hapus data pengajuan mitra ini?')) {
                 db.ref('vendors/' + id).remove();
             }
@@ -643,6 +665,7 @@
         // SIMPAN / EDIT PRODUK
         function saveProduct(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Produk tidak dapat disimpan permanen.'); return; }
             const id = document.getElementById('prodId').value;
             const payload = {
                 title: document.getElementById('prodTitle').value,
@@ -684,6 +707,7 @@
         }
 
         function deleteProduct(id) {
+            if (isDemoMode) { alert('Mode Demo: Produk tidak dapat dihapus.'); return; }
             if (confirm('Yakin ingin menghapus produk ini?')) {
                 db.ref('products/' + id).remove();
             }
@@ -692,6 +716,7 @@
         // TAMBAH KATEGORI
         function addCategory(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Kategori tidak dapat ditambahkan.'); return; }
             const name = document.getElementById('newCatName').value.trim();
             const slug = name.toLowerCase().replace(/\s+/g, '-');
             db.ref('categories').push({ name, slug });
@@ -699,6 +724,7 @@
         }
 
         function deleteCategory(id) {
+            if (isDemoMode) { alert('Mode Demo: Kategori tidak dapat dihapus.'); return; }
             if (confirm('Hapus kategori ini?')) db.ref('categories/' + id).remove();
         }
 
@@ -717,6 +743,7 @@
 
         function savePromoConfig(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Promo tidak dapat disimpan.'); return; }
             db.ref('config/promo').set({
                 active: document.getElementById('promoActive').checked,
                 badge: document.getElementById('promoBadge').value,
@@ -740,6 +767,7 @@
 
         function saveContactSettings(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Kontak tidak dapat disimpan.'); return; }
             db.ref('config/contact').set({
                 wa: document.getElementById('cfgWa').value.trim(),
                 ig: document.getElementById('cfgIg').value.trim(),
@@ -771,6 +799,7 @@
 
         function addTestimonial(e) {
             e.preventDefault();
+            if (isDemoMode) { alert('Mode Demo: Testimoni tidak dapat ditambahkan.'); return; }
             db.ref('testimonials').push({
                 name: document.getElementById('testiName').value,
                 city: document.getElementById('testiCity').value,
@@ -784,6 +813,7 @@
         }
 
         function deleteTesti(id) {
+            if (isDemoMode) { alert('Mode Demo: Testimoni tidak dapat dihapus.'); return; }
             if (confirm('Hapus testimoni ini?')) db.ref('testimonials/' + id).remove();
         }
     </script>
