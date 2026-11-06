@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel Admin - Muhlisin Market</title>
+    <title>Panel Admin - Pusat Grosir Kita</title>
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     
     <!-- TAILWIND CSS & FONT AWESOME -->
@@ -23,47 +23,49 @@
 
     <div class="min-h-screen flex flex-col md:flex-row">
         
-        <!-- SIDEBAR ADMIN -->
-        <aside class="w-full md:w-64 bg-slate-900 text-white p-5 shrink-0">
-            <div class="flex items-center gap-3 mb-6">
-                <img src="logo.jpg" alt="Logo Muhlisin Market" class="w-10 h-10 rounded-full object-cover border border-amber-400">
-                <div>
-                    <h1 class="font-bold text-sm">Muhlisin Market</h1>
-                    <p class="text-[10px] text-amber-400 font-semibold">Panel Kontrol Admin</p>
+        <!-- SIDEBAR ADMIN (DILENGKAPI SCROLL AGAR TIDAK TERPOTONG) -->
+        <aside class="w-full md:w-64 bg-slate-900 text-white p-5 shrink-0 sticky top-0 h-screen overflow-y-auto flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <img src="logo.jpg" alt="Logo Pusat Grosir Kita" class="w-10 h-10 rounded-full object-cover border border-amber-400">
+                    <div>
+                        <h1 class="font-bold text-sm">Pusat Grosir Kita</h1>
+                        <p class="text-[10px] text-amber-400 font-semibold">Panel Kontrol Admin</p>
+                    </div>
                 </div>
+
+                <nav class="space-y-1 text-xs pb-10">
+                    <button onclick="switchTab('tab-products')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-amber-500 text-slate-900 font-bold transition">
+                        <i class="fa-solid fa-boxes-stacked"></i> Kelola Produk & Stok
+                    </button>
+                    <button onclick="switchTab('tab-orders')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-truck-fast text-cyan-400"></i> Kelola Pesanan & Resi
+                    </button>
+                    <button onclick="switchTab('tab-vendors')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-handshake text-amber-400"></i> Mitra & Titip Jual
+                    </button>
+                    <button onclick="switchTab('tab-hero')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-house-chimney text-amber-400"></i> Pengaturan Website & Hero
+                    </button>
+                    <button onclick="switchTab('tab-about')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-user-tie text-blue-400"></i> Profil Tentang Kami
+                    </button>
+                    <button onclick="switchTab('tab-promo')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-rectangle-ad text-red-400"></i> Banner Promo & Voucher
+                    </button>
+                    <button onclick="switchTab('tab-categories')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-tags text-cyan-400"></i> Kategori Produk
+                    </button>
+                    <button onclick="switchTab('tab-testimonials')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-comments text-purple-400"></i> Testimoni Pembeli
+                    </button>
+                    <button onclick="switchTab('tab-settings')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
+                        <i class="fa-solid fa-sliders text-emerald-400"></i> Kontak WA & Sosmed
+                    </button>
+                </nav>
             </div>
 
-            <nav class="space-y-1 text-xs">
-                <button onclick="switchTab('tab-products')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg bg-amber-500 text-slate-900 font-bold transition">
-                    <i class="fa-solid fa-boxes-stacked"></i> Kelola Produk & Stok
-                </button>
-                <button onclick="switchTab('tab-orders')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-truck-fast text-cyan-400"></i> Kelola Pesanan & Resi
-                </button>
-                <button onclick="switchTab('tab-vendors')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-handshake text-amber-400"></i> Mitra & Titip Jual
-                </button>
-                <button onclick="switchTab('tab-hero')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-house-chimney text-amber-400"></i> Pengaturan Website & Hero
-                </button>
-                <button onclick="switchTab('tab-about')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-user-tie text-blue-400"></i> Profil Tentang Kami
-                </button>
-                <button onclick="switchTab('tab-promo')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-rectangle-ad text-red-400"></i> Banner Promo & Voucher
-                </button>
-                <button onclick="switchTab('tab-categories')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-tags text-cyan-400"></i> Kategori Produk
-                </button>
-                <button onclick="switchTab('tab-testimonials')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-comments text-purple-400"></i> Testimoni Pembeli
-                </button>
-                <button onclick="switchTab('tab-settings')" class="w-full text-left flex items-center gap-2.5 px-3 py-2.5 rounded-lg hover:bg-slate-800 text-gray-300 font-semibold transition">
-                    <i class="fa-solid fa-sliders text-emerald-400"></i> Kontak WA & Sosmed
-                </button>
-            </nav>
-
-            <div class="mt-8 pt-4 border-t border-slate-800">
+            <div class="mt-8 pt-4 border-t border-slate-800 pb-4">
                 <a href="index.html" target="_blank" class="block w-full text-center bg-slate-800 hover:bg-slate-700 py-2 rounded-lg text-xs font-bold text-amber-400 transition">
                     <i class="fa-solid fa-globe mr-1"></i> Lihat Toko Online
                 </a>
@@ -242,11 +244,11 @@
                     <form onsubmit="saveWebsiteSettings(event)" class="space-y-3 text-xs">
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Nama Brand / Toko</label>
-                            <input type="text" id="settingBrandName" placeholder="Muhlisin Market" required class="w-full border rounded-lg p-2">
+                            <input type="text" id="settingBrandName" placeholder="Pusat Grosir Kita" required class="w-full border rounded-lg p-2">
                         </div>
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Judul Utama (Hero Header Title)</label>
-                            <input type="text" id="settingHeroTitle" placeholder="Selamat Datang di Muhlisin Market!" required class="w-full border rounded-lg p-2">
+                            <input type="text" id="settingHeroTitle" placeholder="Selamat Datang di Pusat Grosir Kita!" required class="w-full border rounded-lg p-2">
                         </div>
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Sub-Judul (Hero Header Sub)</label>
@@ -292,7 +294,7 @@
                         </div>
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Judul Profil (Nama & Peran)</label>
-                            <input type="text" id="aboutTitle" placeholder="Muhlisin — Digital Marketer & Affiliate Curator" required class="w-full border rounded-lg p-2">
+                            <input type="text" id="aboutTitle" placeholder="Pusat Grosir Kita — Tim Kurator & Distributor" required class="w-full border rounded-lg p-2">
                         </div>
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Deskripsi Lengkap</label>
@@ -410,11 +412,11 @@
                         </div>
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Username Instagram</label>
-                            <input type="text" id="cfgIg" placeholder="@shane_feela" class="w-full border rounded-lg p-2">
+                            <input type="text" id="cfgIg" placeholder="@pusatgrosirkita" class="w-full border rounded-lg p-2">
                         </div>
                         <div>
                             <label class="block font-bold mb-1 text-gray-700">Username TikTok</label>
-                            <input type="text" id="cfgTiktok" placeholder="@shane_feela" class="w-full border rounded-lg p-2">
+                            <input type="text" id="cfgTiktok" placeholder="@pusatgrosirkita" class="w-full border rounded-lg p-2">
                         </div>
                         <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-4 py-2 rounded-lg transition shadow">
                             <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Kontak & Sosmed
@@ -428,6 +430,20 @@
 
     <!-- FIREBASE SCRIPT & ADMIN LOGIC -->
     <script>
+        // ==========================================
+        // KEAMANAN PIN ADMIN
+        // ==========================================
+        function checkAdminAuth() {
+            const savedPin = localStorage.getItem("admin_pin") || "123456"; // PIN Default: 123456
+            let userPin = prompt("Masukkan PIN Keamanan Admin:");
+            
+            if (userPin !== savedPin) {
+                alert("PIN Salah! Akses ditolak.");
+                window.location.href = "index.html"; // Kembalikan ke beranda jika salah
+            }
+        }
+        checkAdminAuth(); // Jalankan proteksi PIN saat halaman dibuka
+
         // PENDETEKSI MODE DEMO (?demo=true)
         const urlParams = new URLSearchParams(window.location.search);
         const isDemoMode = urlParams.get('demo') === 'true' || urlParams.get('demo') === '1' || urlParams.get('mode') === 'demo';
